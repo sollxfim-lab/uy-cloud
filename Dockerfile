@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Pasang alatan asas dan ttyd sebagai root
+# Install system utilities, Python, Node.js/npm, tmux, and ttyd as root
 RUN apt-get update && apt-get install -y \
     curl \
     wget \
@@ -12,12 +12,17 @@ RUN apt-get update && apt-get install -y \
     htop \
     net-tools \
     iputils-ping \
+    python3 \
+    python3-pip \
+    python3-venv \
+    nodejs \
+    npm \
+    tmux \
     ttyd \
     && rm -rf /var/lib/apt/lists/*
 
-# Render menyediakan port secara dinamik
 ENV PORT=10000
 EXPOSE 10000
 
-# Jalankan ttyd sebagai root supaya anda boleh pasang apa sahaja pakej
+# Start ttyd as root with custom credentials
 CMD ["sh", "-c", "ttyd -p ${PORT} -c myusername:SuperSecretPassword123 bash"]
