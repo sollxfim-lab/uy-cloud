@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install all required packages here during build time (as root)
+# Pasang alatan asas dan ttyd sebagai root
 RUN apt-get update && apt-get install -y \
     curl \
     wget \
@@ -12,18 +12,12 @@ RUN apt-get update && apt-get install -y \
     htop \
     net-tools \
     iputils-ping \
-    python3 \
-    python3-pip \
     ttyd \
     && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user
-RUN useradd -ms /bin/bash vpsuser
-
-USER vpsuser
-WORKDIR /home/vpsuser
-
+# Render menyediakan port secara dinamik
 ENV PORT=10000
 EXPOSE 10000
 
+# Jalankan ttyd sebagai root supaya anda boleh pasang apa sahaja pakej
 CMD ["sh", "-c", "ttyd -p ${PORT} -c myusername:SuperSecretPassword123 bash"]
